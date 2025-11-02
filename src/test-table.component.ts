@@ -39,12 +39,7 @@ type Data = { position: number; name: string; weight: number; symbol: string };
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
 
-    <mat-paginator
-      appBubblePagination
-      [appCustomLength]="dataSource.data.length"
-      [length]="dataSource.data.length"
-      [pageSize]="10">
-    </mat-paginator>
+    <mat-paginator appBubblePagination [length]="dataSource.data.length" [pageSize]="15"> </mat-paginator>
   `,
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -57,7 +52,7 @@ export class TestTableComponent {
 
   constructor() {
     const data: Data[] = [];
-    Array.from({ length: 100 }, (_, k) => k + 1).forEach(v => {
+    Array.from({ length: 200 }, (_, k) => k + 1).forEach(v => {
       data.push({ position: v, name: `Element ${v}`, weight: v * 1.5, symbol: `E${v}` });
     });
 

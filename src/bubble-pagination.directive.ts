@@ -34,11 +34,6 @@ export class BubblePaginationDirective {
   readonly renderButtonsNumber = input(2);
 
   /**
-   * how many elements are in the table
-   */
-  readonly appCustomLength = input<number | null | undefined>(0);
-
-  /**
    * references to DOM elements
    */
   private dotsEndRef!: HTMLElement;
@@ -49,7 +44,7 @@ export class BubblePaginationDirective {
   private buttonsRef: HTMLElement[] = [];
 
   readonly buildButtonsEffect = afterNextRender(() => {
-    const appCustomLength = this.appCustomLength() ?? 0;
+    const appCustomLength = this.matPag?.length ?? 0;
 
     // remove buttons before creating new ones
     this.removeButtons();
