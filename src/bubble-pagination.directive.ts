@@ -44,7 +44,9 @@ export class BubblePaginationDirective {
   private dotsStartRef!: HTMLElement;
   private bubbleContainerRef!: HTMLElement;
 
-  // remember rendered buttons on UI that we can remove them when page index change
+  /**
+   * ref to rendered buttons on UI that we can remove them size changes
+   */
   private buttonsRef: HTMLElement[] = [];
 
   readonly buildButtonsEffect = afterRenderEffect(() => {
