@@ -1,5 +1,5 @@
 import { afterNextRender, ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { BubblePaginationDirective } from './bubble-pagination.directive';
 
@@ -39,7 +39,7 @@ type Data = { position: number; name: string; weight: number; symbol: string };
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
 
-    <mat-paginator appBubblePagination (page)="onChange($event)" [length]="dataSource.data.length" [pageSize]="15">
+    <mat-paginator appBubblePagination (page)="onPageChange($event)" [length]="dataSource.data.length" [pageSize]="15">
     </mat-paginator>
   `,
   styles: [],
@@ -68,8 +68,7 @@ export class TestTableComponent {
     });
   }
 
-  onChange(event: any) {
-    // handle page change if needed
+  onPageChange(event: PageEvent) {
     console.log('Page changed to index:', event);
   }
 }
