@@ -39,7 +39,11 @@ type Data = { position: number; name: string; weight: number; symbol: string };
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
 
-    <mat-paginator appBubblePagination (page)="onPageChange($event)" [length]="dataSource.data.length" [pageSize]="15">
+    <mat-paginator
+      [appBubblePagination]="dataSource.data.length"
+      (page)="onPageChange($event)"
+      [length]="dataSource.data.length"
+      [pageSize]="15">
     </mat-paginator>
   `,
   styles: [],
@@ -52,12 +56,13 @@ export class TestTableComponent {
   readonly displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
 
   constructor() {
-    const data: Data[] = [];
-    Array.from({ length: 200 }, (_, k) => k + 1).forEach(v => {
-      data.push({ position: v, name: `Element ${v}`, weight: v * 1.5, symbol: `E${v}` });
-    });
+    this.dataSource.data = this.renderData(0);
 
-    this.dataSource.data = data;
+    setTimeout(() => {
+      console.log('Updating data source with more elements');
+
+      this.dataSource.data = [...this.dataSource.data, ...this.renderData(101)];
+    }, 3000);
 
     afterNextRender(() => {
       const paginator = this.paginator();
@@ -70,5 +75,15 @@ export class TestTableComponent {
 
   onPageChange(event: PageEvent) {
     console.log('Page changed to index:', event);
+  }
+
+  private renderData(startingVal: number): Data[] {
+    const data: Data[] = [];
+    Array.from({ length: 100 }, (_, k) => k + 1).forEach(v => {
+      const val = startingVal ? startingVal + v : v;
+      data.push({ position: v, name: `Element ${val}`, weight: val * 1.5, symbol: `E${val}` });
+    });
+
+    return data;
   }
 }

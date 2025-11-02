@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer2, afterNextRender, inject, input } from '@angular/core';
+import { Directive, ElementRef, Renderer2, afterRenderEffect, inject, input, untracked } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 
 /**
@@ -23,6 +23,15 @@ export class BubblePaginationDirective {
   readonly showLastButton = input(true);
 
   /**
+   * total number of items in pagination
+   * needed to calculate how many buttons to render
+   * when page size changes
+   */
+  readonly paginationSize = input(0, {
+    alias: 'appBubblePagination',
+  });
+
+  /**
    * how many buttons to display before and after
    * the selected button
    */
@@ -38,21 +47,26 @@ export class BubblePaginationDirective {
   // remember rendered buttons on UI that we can remove them when page index change
   private buttonsRef: HTMLElement[] = [];
 
-  readonly buildButtonsEffect = afterNextRender(() => {
-    // remove buttons before creating new ones
-    this.removeButtons();
+  readonly buildButtonsEffect = afterRenderEffect(() => {
+    // rebuild buttons when pagination size change
+    this.paginationSize();
 
-    // set some default styles to mat pagination
-    this.styleDefaultPagination();
+    untracked(() => {
+      // remove buttons before creating new ones
+      this.removeButtons();
 
-    // create bubble container
-    this.createBubbleDivRef();
+      // set some default styles to mat pagination
+      this.styleDefaultPagination();
 
-    // create all buttons
-    this.buildButtons();
+      // create bubble container
+      this.createBubbleDivRef();
 
-    // switch back to page 0
-    this.switchPage(0);
+      // create all buttons
+      this.buildButtons();
+
+      // switch back to page 0
+      this.switchPage(0);
+    });
   });
 
   /**
