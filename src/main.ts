@@ -1,17 +1,25 @@
 import { Component } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { TestTableComponent } from './test-table.component';
 
 @Component({
   selector: 'app-root',
+  imports: [TestTableComponent],
   template: `
-    <h1>Hello from {{ name }}!</h1>
-    <a target="_blank" href="https://angular.dev/overview">
-      Learn more about Angular
-    </a>
+    <div class="wrapper">
+      <app-test-table />
+    </div>
   `,
+  styles: [
+    `
+      .wrapper {
+        width: 80%;
+        margin: auto;
+        padding-top: 50px;
+      }
+    `,
+  ],
 })
-export class App {
-  name = 'Angular';
-}
+export class App {}
 
 bootstrapApplication(App);

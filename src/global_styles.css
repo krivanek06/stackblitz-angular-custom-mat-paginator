@@ -1,1 +1,64 @@
 /* Add application styles & imports to this file! */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  background-color: #062629;
+}
+
+table {
+  background: transparent !important;
+}
+
+table tbody tr {
+  color: #ffffff !important;
+}
+
+table thead th {
+  color: #ffffff !important;
+}
+
+/* Custom paginator styles */
+.g-bubble-container {
+  display: flex;
+  gap: 4px;
+}
+
+.g-bubble {
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2e2e2e;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: #636363;
+    color: orange;
+  }
+}
+
+.g-bubble__active {
+  background-color: #636363;
+  color: orange;
+}
+
+mat-paginator {
+  background: transparent !important;
+  /* need mat-paginator range to align with other mat-table elements */
+  position: relative;
+}
+
+/* override alignment for the labels that shows "x of y" */
+.mat-mdc-paginator-range-label {
+  margin: 0 !important;
+}
