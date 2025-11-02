@@ -1,7 +1,5 @@
-import { DestroyRef, Directive, ElementRef, Renderer2, afterNextRender, inject, input, output } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Directive, ElementRef, Renderer2, afterNextRender, inject, input, output } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { map, startWith } from 'rxjs';
 
 /**
  * Works from angular-material version 15. since all classes got the new prefix 'mdc-'
@@ -18,7 +16,6 @@ export class BubblePaginationDirective {
   });
   private readonly elementRef = inject(ElementRef);
   private readonly ren = inject(Renderer2);
-  private readonly destroyRef = inject(DestroyRef);
 
   /**
    * custom emitter for parent component
@@ -64,33 +61,12 @@ export class BubblePaginationDirective {
     // create bubble container
     this.createBubbleDivRef();
 
-    // switch back to page 0
-    this.switchPage(0);
-
     // create all buttons
     this.buildButtons(appCustomLength);
 
-    // listen on changing the buttons
-    this.listenOnPageChange();
+    // switch back to page 0
+    this.switchPage(0);
   });
-
-  private listenOnPageChange(): void {
-    if (!this.matPag) {
-      return;
-    }
-
-    // when pagination change -> change button styles
-    this.matPag.page
-      .pipe(
-        map(e => [e.previousPageIndex ?? 0, e.pageIndex]),
-        startWith([0, 0]),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(([prev, curr]) => {
-        // console.log('aaaaaa', prev, curr);
-        this.changeActiveButtonStyles(prev, curr);
-      });
-  }
 
   /**
    * change the active button style to the current one and display/hide additional buttons
@@ -311,16 +287,14 @@ export class BubblePaginationDirective {
     }
 
     const previousPageIndex = this.matPag.pageIndex;
+
+    // switch page index of mat paginator
     this.matPag.pageIndex = i;
 
-    // emit page event from MatPaginator
-    this.matPag.page.emit({
-      previousPageIndex: previousPageIndex,
-      pageIndex: this.matPag.pageIndex,
-      pageSize: this.matPag.pageSize,
-      length: this.matPag.length,
-    });
+    // change active button styles
+    this.changeActiveButtonStyles(previousPageIndex, this.matPag.pageIndex);
 
+    // emit the page index change to parent component
     this.pageIndexChangeEmitter.emit(i);
   }
 }
