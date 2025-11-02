@@ -7,19 +7,27 @@ body {
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
-  background-color: #062629;
+  background-color: #202020;
 }
 
 table {
-  background: transparent !important;
+  background: #131313 !important;
 }
 
 table tbody tr {
-  color: #ffffff !important;
+  color: #9a9a9a !important;
 }
 
 table thead th {
   color: #ffffff !important;
+}
+
+.mat-mdc-paginator-outer-container {
+  color: white !important;
+}
+
+.mat-mdc-paginator-icon {
+  fill: white !important;
 }
 
 /* Custom paginator styles */
