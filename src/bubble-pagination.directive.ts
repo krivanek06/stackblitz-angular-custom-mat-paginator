@@ -312,7 +312,14 @@ export class BubblePaginationDirective {
 
     const previousPageIndex = this.matPag.pageIndex;
     this.matPag.pageIndex = i;
-    this.matPag['_emitPageEvent'](previousPageIndex);
+
+    // emit page event from MatPaginator
+    this.matPag.page.emit({
+      previousPageIndex: previousPageIndex,
+      pageIndex: this.matPag.pageIndex,
+      pageSize: this.matPag.pageSize,
+      length: this.matPag.length,
+    });
 
     this.pageIndexChangeEmitter.emit(i);
   }
