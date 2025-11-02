@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer2, afterNextRender, inject, input, output } from '@angular/core';
+import { Directive, ElementRef, Renderer2, afterNextRender, inject, input } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 
 /**
@@ -15,11 +15,6 @@ export class BubblePaginationDirective {
   });
   private readonly elementRef = inject(ElementRef);
   private readonly ren = inject(Renderer2);
-
-  /**
-   * custom emitter for parent component
-   */
-  readonly pageIndexChangeEmitter = output<number>();
 
   /**
    * whether we want to display first/last button and dots
@@ -288,7 +283,12 @@ export class BubblePaginationDirective {
     // change active button styles
     this.changeActiveButtonStyles(previousPageIndex, this.matPag.pageIndex);
 
-    // emit the page index change to parent component
-    this.pageIndexChangeEmitter.emit(i);
+    // need to trigger page event manually, because we are changing pageIndex programmatically
+    this.matPag.page.emit({
+      pageIndex: i,
+      pageSize: this.matPag.pageSize,
+      length: this.matPag.length,
+      previousPageIndex: previousPageIndex,
+    });
   }
 }

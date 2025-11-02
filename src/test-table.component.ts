@@ -39,7 +39,8 @@ type Data = { position: number; name: string; weight: number; symbol: string };
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
 
-    <mat-paginator appBubblePagination [length]="dataSource.data.length" [pageSize]="15"> </mat-paginator>
+    <mat-paginator appBubblePagination (page)="onChange($event)" [length]="dataSource.data.length" [pageSize]="15">
+    </mat-paginator>
   `,
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -65,5 +66,10 @@ export class TestTableComponent {
         this.dataSource.paginator = paginator;
       }
     });
+  }
+
+  onChange(event: any) {
+    // handle page change if needed
+    console.log('Page changed to index:', event);
   }
 }
