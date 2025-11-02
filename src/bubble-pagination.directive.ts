@@ -1,4 +1,5 @@
-import { Directive, ElementRef, Renderer2, afterNextRender, inject, input, output } from '@angular/core';
+import { DestroyRef, Directive, ElementRef, Renderer2, afterNextRender, inject, input, output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatPaginator } from '@angular/material/paginator';
 import { map, startWith } from 'rxjs';
 
@@ -17,6 +18,7 @@ export class BubblePaginationDirective {
   });
   private readonly elementRef = inject(ElementRef);
   private readonly ren = inject(Renderer2);
+  private readonly destroyRef = inject(DestroyRef);
 
   /**
    * custom emitter for parent component
@@ -81,8 +83,8 @@ export class BubblePaginationDirective {
     this.matPag.page
       .pipe(
         map(e => [e.previousPageIndex ?? 0, e.pageIndex]),
-        startWith([0, 0])
-        // takeUntilDestroyed() // <-- does not work
+        startWith([0, 0]),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([prev, curr]) => {
         // console.log('aaaaaa', prev, curr);
