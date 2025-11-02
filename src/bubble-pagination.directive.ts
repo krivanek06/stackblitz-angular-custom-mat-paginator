@@ -6,7 +6,6 @@ import { MatPaginator } from '@angular/material/paginator';
  */
 @Directive({
   selector: '[appBubblePagination]',
-  standalone: true,
 })
 export class BubblePaginationDirective {
   private readonly matPag = inject(MatPaginator, {
