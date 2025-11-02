@@ -39,8 +39,6 @@ export class BubblePaginationDirective {
   private buttonsRef: HTMLElement[] = [];
 
   readonly buildButtonsEffect = afterNextRender(() => {
-    const appCustomLength = this.matPag?.length ?? 0;
-
     // remove buttons before creating new ones
     this.removeButtons();
 
@@ -51,7 +49,7 @@ export class BubblePaginationDirective {
     this.createBubbleDivRef();
 
     // create all buttons
-    this.buildButtons(appCustomLength);
+    this.buildButtons();
 
     // switch back to page 0
     this.switchPage(0);
@@ -161,12 +159,12 @@ export class BubblePaginationDirective {
    *
    * end result: (1) .... (4) (5) (6) ... (25)
    */
-  private buildButtons(appCustomLength: number): void {
+  private buildButtons(): void {
     if (!this.matPag) {
       return;
     }
 
-    const neededButtons = Math.ceil(appCustomLength / this.matPag.pageSize);
+    const neededButtons = Math.ceil(this.matPag.length / this.matPag.pageSize);
 
     // if there is only one page, do not render buttons
     if (neededButtons === 0 || neededButtons === 1) {
